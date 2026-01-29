@@ -24,4 +24,4 @@ ENV PORT=8000
 # We use 'sh' to ensure the $PORT variable is read correctly by the script.
 # This points exactly to the quickstart_server.py you found.
 # Replace your current CMD with this one:
-CMD ["sh", "-c", "python local_setup/quickstart_server.py --host 0.0.0.0 --port 8000 & tail -f /dev/null"]
+CMD ["python", "local_setup/quickstart_server.py", "--host", "0.0.0.0", "--port", "8000"]

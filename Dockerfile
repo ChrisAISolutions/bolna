@@ -21,3 +21,4 @@ ENV PORT=8000
 # 5. THE START COMMAND
 # This runs the quickstart server but adds a 'wait' command so it stays ACTIVE.
 CMD ["sh", "-c", "python local_setup/quickstart_server.py --host 0.0.0.0 --port 8000 & sleep infinity"]
+

@@ -47,3 +47,5 @@ huggingface-hub==0.24.3
 # --- Telephony ---
 twilio==8.9.0
 plivo==4.47.0
+typing-extensions
+setuptools

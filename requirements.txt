@@ -1,35 +1,49 @@
-aiobotocore==2.9.0
-aiofiles==23.2.1
-aiohttp==3.9.1
-azure-cognitiveservices-speech==1.38.0
+# --- Core AI & Audio (CPU Optimized) ---
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchaudio
+onnxruntime
+optimum
+
+# --- API & Cloud ---
+openai>=1.10.0
 google-cloud-speech==2.25.0
-fastapi==0.108.0
-fastembed==0.3.5
-huggingface-hub==0.24.3
+azure-cognitiveservices-speech==1.38.0
 litellm==1.65.0
 llama_index==0.10.65
 llama-index-vector-stores-lancedb==0.1.7
-numpy==1.26.1
-openai>=1.10.0
-plivo==4.47.0
-pydantic==2.5.3
-pydub==0.25.1
-pymongo==4.8.0
-python-dateutil==2.8.2
-python-dotenv==1.0.0
-redis==5.0.1
-requests==2.31.0
-tiktoken>=0.6.0
-torchaudio==2.0.1
-twilio==8.9.0
+
+# --- Web & Server ---
+fastapi==0.108.0
 uvicorn==0.22.0
 websockets==15.0.1
-onnxruntime>=1.16.3
-scipy==1.11.4
-semantic-router==0.0.46
-sentence-transformers==3.0.1
-tokenizers==0.15.2
-optimum[onnxruntime]
-lancedb==0.12.0
-pymongo==4.8.0
+aiohttp==3.9.1
+aiofiles==23.2.1
+requests==2.31.0
 httpx[http2]>=0.25.0
+
+# --- Database & Storage ---
+pymongo==4.8.0
+redis==5.0.1
+lancedb==0.12.0
+aiobotocore==2.9.0
+
+# --- Logic & Data ---
+numpy==1.26.1
+pydantic==2.5.3
+python-dotenv==1.0.0
+python-dateutil==2.8.2
+tiktoken>=0.6.0
+pydub==0.25.1
+scipy==1.11.4
+
+# --- Embeddings ---
+fastembed==0.3.5
+sentence-transformers==3.0.1
+semantic-router==0.0.46
+tokenizers==0.15.2
+huggingface-hub==0.24.3
+
+# --- Telephony ---
+twilio==8.9.0
+plivo==4.47.0

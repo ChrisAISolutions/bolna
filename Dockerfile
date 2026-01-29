@@ -1,22 +1,21 @@
 FROM python:3.11-slim
 WORKDIR /app
 
-# Install system essentials
+# 1. Install essentials
 RUN apt-get update && apt-get install -y build-essential ffmpeg && rm -rf /var/lib/apt/lists/*
 
-# Copy and install requirements
+# 2. Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu
-# We manually add 'uvicorn' just in case it's missing from your requirements
-RUN pip install --no-cache-dir -r requirements.txt uvicorn 
+RUN pip install --no-cache-dir -r requirements.txt uvicorn
 
-# Copy your code
+# 3. Copy code
 COPY . .
 
-# Set paths
+# 4. Environment setup
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
-# This command starts a real web server on the port Railway expects
-# We try to run the 'assistant' as an app. 
-CMD ["sh", "-c", "uvicorn bolna.assistant:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# 5. THE FIX: Running the actual Bolna API Server
+# This is what makes the "Application failed to respond" error go away.
+CMD ["python", "bolna/server.py"]

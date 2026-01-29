@@ -1,33 +1,24 @@
-# --- Stage 1: The Builder (Heavy Lifting) ---
-FROM python:3.11-slim AS builder
-WORKDIR /app
-
-# Install build tools
-RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-
-# THE MAGIC: Install CPU-only versions to stay under the 4GB limit
-RUN pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-# Install the rest of your requirements
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# --- Stage 2: The Final Lean Image ---
 FROM python:3.11-slim
 WORKDIR /app
 
-# Install ffmpeg (required for Bolna audio)
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+# Install system essentials
+RUN apt-get update && apt-get install -y build-essential ffmpeg && rm -rf /var/lib/apt/lists/*
 
-# Copy only the installed packages
-COPY --from=builder /root/.local /root/.local
+# Copy your requirements
+COPY requirements.txt .
+
+# Install the CPU-only AI libraries (This keeps you under 4GB)
+RUN pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+# Install everything else
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy your code
 COPY . .
 
-# Ensure the app can see the installed packages
-ENV PATH=/root/.local/bin:$PATH
-ENV PYTHONUNBUFFERED=1
+# Set the path so Bolna can find its own folders
 ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
 
-# BOLNA START COMMAND: This starts the Bolna assistant module
+# The Bolna start command
 CMD ["python", "-m", "bolna.assistant"]

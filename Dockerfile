@@ -28,5 +28,5 @@ COPY . .
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONUNBUFFERED=1
 
-# This command looks for main.py, and if not found, tries app.py
-CMD ["sh", "-c", "python main.py || python app.py || python bolna_server.py"]
+# BOLNA SPECIFIC START: This command checks common Bolna entry points
+CMD ["sh", "-c", "python -m bolna.main || python bolna/main.py || python main.py"]

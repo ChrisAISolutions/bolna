@@ -7,20 +7,20 @@ RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/
 
 COPY requirements.txt .
 
-# THE SECRET SAUCE: Install CPU-only versions to save 4GB+ 
+# THE MAGIC: Install CPU-only versions to stay under the 4GB limit
 RUN pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu
 
-# Install the rest of your requirements to the .local folder
+# Install the rest of your requirements
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # --- Stage 2: The Final Lean Image ---
 FROM python:3.11-slim
 WORKDIR /app
 
-# Install only what's needed for the app to run (like ffmpeg for audio)
+# Install ffmpeg (required for Bolna audio processing)
 RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
-# Copy only the installed packages (no caches, no build tools)
+# Copy only the installed packages from the builder
 COPY --from=builder /root/.local /root/.local
 COPY . .
 
@@ -28,5 +28,5 @@ COPY . .
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "main.py"]
-# Refresh code 1
+# This command looks for main.py, and if not found, tries app.py
+CMD ["sh", "-c", "python main.py || python app.py || python bolna_server.py"]
